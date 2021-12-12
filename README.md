@@ -2,9 +2,7 @@
 
 Demonstrates minimum configuration changes to the .Net 6 Blazor WASM templates.
 
-## WASMClient.Client
-
-Minimal 
+## WASM Client
 
 ```
 Install-Package RESTFulSense.WebAssembly -Version 0.9.0
@@ -61,3 +59,47 @@ builder.Services.AddScoped<IRESTFulApiClient>(
 }
 ```
 
+## WASM Factory Client
+
+```
+Install-Package RESTFulSense.WebAssembly -Version 0.9.0
+```
+
+`program.cs`
+
+Update this line:
+```
+builder.Services.AddHttpClient("WASMFactoryClient.ServerAPI", client => client.BaseAddress = new Uri(builder.HostEnvironment.BaseAddress))
+    .AddHttpMessageHandler<BaseAddressAuthorizationMessageHandler>();
+
+builder.Services.AddScoped(sp => sp.GetRequiredService<IHttpClientFactory>().CreateClient("WASMFactoryClient.ServerAPI"));
+```
+to:
+```
+using RESTFulSense.WebAssembly.Clients;
+using RESTFulSense.WebAssembly.Services;
+...
+
+builder.Services.AddRESTFulApiClient(
+    name: "WASMFactoryClient.ServerAPI",
+    client => client.BaseAddress = new Uri(builder.HostEnvironment.BaseAddress))
+        .AddHttpMessageHandler<BaseAddressAuthorizationMessageHandler>();
+
+builder.Services.AddScoped<IRESTFulApiFactoryClient>(
+    sp => sp.GetRequiredService<IRESTFulApiClientFactory>().CreateClient(name: "WASMFactoryClient.ServerAPI"));
+
+```
+
+`FetchData.razor`
+```
+@using RESTFulSense.WebAssembly.Clients
+@inject IRESTFulApiFactoryClient Http
+
+...
+@code {
+    ...
+        forecasts = await Http.GetContentAsync<WeatherForecast[]>("WeatherForecast");
+    ...
+}
+
+```

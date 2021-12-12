@@ -1,9 +1,10 @@
 ﻿@page "/fetchdata"
 @using Microsoft.AspNetCore.Authorization
 @using Microsoft.AspNetCore.Components.WebAssembly.Authentication
+@using RESTFulSense.WebAssembly.Clients
 @using WASMFactoryClient.Shared
 @attribute [Authorize]
-@inject HttpClient Http
+@inject IRESTFulApiFactoryClient Http
 
 <PageTitle>Weather forecast</PageTitle>
 
@@ -47,7 +48,7 @@ else
     {
         try
         {
-            forecasts = await Http.GetFromJsonAsync<WeatherForecast[]>("WeatherForecast");
+            forecasts = await Http.GetContentAsync<WeatherForecast[]>("WeatherForecast");
         }
         catch (AccessTokenNotAvailableException exception)
         {
