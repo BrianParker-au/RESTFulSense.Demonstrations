@@ -6,6 +6,10 @@ Demonstrates minimum configuration changes to the .Net 6 Blazor WASM templates.
 
 Minimal 
 
+```
+Install-Package RESTFulSense.WebAssembly -Version 0.9.0
+```
+
 `program.cs`
 
 Update this line:
@@ -13,14 +17,14 @@ Update this line:
 builder.Services.AddScoped(sp => new HttpClient { BaseAddress = new Uri(builder.HostEnvironment.BaseAddress) });
 ```
 to:
-...
+```
 using RESTFulSense.WebAssembly.Clients;
 ...
 
 builder.Services.AddScoped(sp => new RESTFulApiClient { BaseAddress = new Uri(builder.HostEnvironment.BaseAddress) });
-...
+```
 
-
+`FetchData.razor`
 ```
 @using RESTFulSense.WebAssembly.Clients
 @inject RESTFulApiClient Http
@@ -33,6 +37,8 @@ builder.Services.AddScoped(sp => new RESTFulApiClient { BaseAddress = new Uri(bu
 }
 
 ```
+
+Alternately you can inject by Interface to allow Mocking.
 
 Injecting Interface (Unit testing support)
 ```
