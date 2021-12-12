@@ -1,6 +1,7 @@
 ﻿@page "/fetchdata"
 @using WASMClient.Shared
-@inject HttpClient Http
+@using RESTFulSense.WebAssembly.Clients
+@inject IRESTFulApiClient Http
 
 <PageTitle>Weather forecast</PageTitle>
 
@@ -42,6 +43,6 @@ else
 
     protected override async Task OnInitializedAsync()
     {
-        forecasts = await Http.GetFromJsonAsync<WeatherForecast[]>("WeatherForecast");
+        forecasts = await Http.GetContentAsync<WeatherForecast[]>("WeatherForecast");
     }
 }
