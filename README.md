@@ -40,12 +40,15 @@ builder.Services.AddScoped(sp => new RESTFulApiClient { BaseAddress = new Uri(bu
 
 Alternately you can inject by Interface to allow Mocking.
 
-Injecting Interface (Unit testing support)
+### Injecting Interface (Unit testing support)
+
+`program.cs`
 ```
 builder.Services.AddScoped<IRESTFulApiClient>(
     serviceProvider => new RESTFulApiClient { BaseAddress = new Uri(builder.HostEnvironment.BaseAddress) });
 ```
 
+`FetchData.razor`
 ```
 @using RESTFulSense.WebAssembly.Clients
 @inject IRESTFulApiClient Http
