@@ -1,9 +1,7 @@
-﻿@page "/fetchdata"
-@using Microsoft.AspNetCore.Authorization
-@using Microsoft.AspNetCore.Components.WebAssembly.Authentication
+﻿@page "/badfetchdata"
+@using WASMClient.Shared
 @using RESTFulSense.WebAssembly.Clients
-@using WASMFactoryClient.Shared
-@inject IRESTFulApiFactoryClient Http
+@inject IRESTFulApiClient Http
 
 <PageTitle>Weather forecast</PageTitle>
 
@@ -45,13 +43,6 @@ else
 
     protected override async Task OnInitializedAsync()
     {
-        try
-        {
-            forecasts = await Http.GetContentAsync<WeatherForecast[]>("WeatherForecast");
-        }
-        catch (AccessTokenNotAvailableException exception)
-        {
-            exception.Redirect();
-        }
+        forecasts = await Http.GetContentAsync<WeatherForecast[]>("BadWeatherForecast");
     }
 }
